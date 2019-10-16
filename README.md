@@ -8,3 +8,4 @@ Unity 1 week 「さがす」 投稿作品
 - UniRx , [Mitライセンス](https://github.com/neuecc/UniRx/blob/master/LICENSE)
 - Zenject , [Mitライセンス](https://github.com/modesttree/Zenject/blob/master/License.md)
 - unityroom-tweet , naichi
+- Nasuフォント, itouhiro, [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0)
