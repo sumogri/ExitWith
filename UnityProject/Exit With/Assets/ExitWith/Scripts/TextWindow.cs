@@ -14,12 +14,13 @@ public class TextWindow : MonoBehaviour,IPointerClickHandler
     private int cnt = 0;
     private bool nowFeeding = false; //現在テキスト送り中か
     private bool skipFeeding; //テキスト送りをスキップして即座に文を出す
+    private const int MAX_ROWS = 3; //テキストで一度に出せる行数
+    private const int FEED_DELAY = 10; //文字送りディレイ(ミリ秒)
 
     public void SetText(TextAsset asset)
     {
         textAsset = asset;
-        text.text = textAsset.SplitedText[0];
-        cnt = 1;
+        TextFeed();
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -46,15 +47,32 @@ public class TextWindow : MonoBehaviour,IPointerClickHandler
 
     private async UniTask TextFeedAsync()
     {
+        //文字送りで表示
         text.text = "";
-        for (int i = 0; i < textAsset.SplitedText[cnt].Length && !skipFeeding; i++)
+        for (int j = 0; j < MAX_ROWS; j++)
         {
-            await UniTask.Delay(1);
-            text.text += textAsset.SplitedText[cnt][i];
+            if (cnt + j >= textAsset.SplitedText.Length)
+                break;
+            
+            for (int i = 0; i < textAsset.SplitedText[cnt+j].Length && !skipFeeding; i++)
+            {
+                await UniTask.Delay(FEED_DELAY);
+                text.text += textAsset.SplitedText[cnt+j][i];
+            }
+            text.text += '\n';
         }
-        text.text = textAsset.SplitedText[cnt];
+
+        //全文を表示
+        text.text = "";
+        for(int j = 0; j < MAX_ROWS; j++) {
+            if (cnt + j >= textAsset.SplitedText.Length)
+                break;
+
+            text.text += textAsset.SplitedText[cnt+j] + '\n';
+        }
+
         skipFeeding = false;
         nowFeeding = false;
-        cnt++;
+        cnt += MAX_ROWS;
     }
 }
