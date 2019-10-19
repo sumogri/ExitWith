@@ -21,11 +21,105 @@ public class Room : MonoBehaviour,IComparable
     private Subject<Room> onMoveTo = new Subject<Room>();
     public Room[] Neighbors { get { return neighbors; } }
     [SerializeField] private Room[] neighbors;
-    
+    [SerializeField] private bool isOpenSpace = false; //開けた場所であるか、trueなら隣接すると名前が見える
+    //自分のUI
+    private Text roomNameText;
+    private Image[] roomConnections;
+    private Button ownButton;
+    private Color cannotEnterColor = Color.black; //隣接箇所にEnterしてない=入室できない場合
+    private Color nonVisitedColor = new Color(0.594f,0.594f,0.594f); //入室はできるけど、入ってない場合
+    private Color visitedColor = Color.white; //入ったことのある場合
+    private VisitState visitState = VisitState.cannot;　//訪れたかどうか
+    private enum VisitState { cannot,none,visit }
 
     public void Start()
     {
-        gameObject.GetComponent<Button>().onClick.AddListener(Pressed);
+        ownButton = gameObject.GetComponent<Button>();
+        ownButton.onClick.AddListener(Pressed);
+        roomNameText = gameObject.GetComponentInChildren<Text>();
+        roomConnections = gameObject.GetComponentsInChildren<Image>();
+
+        //訪問状態によるUI初期化
+        switch (visitState) {
+            case VisitState.cannot:
+                InitUIToCannotVisit();
+                break;
+            case VisitState.none:
+                InitUIToNonVisit();
+                break;
+            case VisitState.visit:
+                InitUIToVisit();
+                break;
+        }
+    }
+
+    /// <summary>
+    /// 入室不可(未探索による)
+    /// </summary>
+    private void InitUIToCannotVisit()
+    {
+        roomNameText.text = "???";
+        ownButton.interactable = false;
+        foreach (var i in roomConnections)
+        {
+            i.color = cannotEnterColor;
+        }
+    }
+
+    /// <summary>
+    /// 入室可能(まだ入ってない)
+    /// </summary>
+    private void InitUIToNonVisit()
+    {
+        if (isOpenSpace)
+            roomNameText.text = Name;
+        else
+            roomNameText.text = "???";
+        ownButton.interactable = true;
+        ownButton.image.color = nonVisitedColor;
+        foreach (var i in roomConnections)
+        {
+            i.color = nonVisitedColor;
+        }
+    }
+
+    /// <summary>
+    /// 入室可能(入ったことがある)
+    /// </summary>
+    private void InitUIToVisit()
+    {
+        ownButton.interactable = true;
+        roomNameText.text = Name;
+        ownButton.image.color = visitedColor;
+        foreach (var i in roomConnections)
+        {
+            i.color = visitedColor;
+        }
+    }
+
+    /// <summary>
+    /// 入室
+    /// </summary>
+    public void Enter()
+    {
+        InitUIToVisit();
+        foreach(var n in neighbors)
+        {
+            n.Enterable();
+        }
+        visitState = VisitState.visit;
+    }
+
+    /// <summary>
+    /// 移動目標にできるようにする
+    /// </summary>
+    public void Enterable()
+    {
+        if (visitState != VisitState.cannot)
+            return;
+
+        InitUIToNonVisit();
+        visitState = VisitState.none;
     }
 
     private void Pressed()

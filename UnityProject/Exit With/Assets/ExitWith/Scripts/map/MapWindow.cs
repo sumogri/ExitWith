@@ -81,5 +81,6 @@ public class MapWindow : MonoBehaviour
     {
         playerIcon.transform.position = rooms[roomId].gameObject.transform.position;
         playerIcon.transform.SetParent(rooms[roomId].gameObject.transform);
+        rooms[roomId].Enter();
     }
 }
