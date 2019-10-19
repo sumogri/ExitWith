@@ -16,6 +16,7 @@ public class TextWindow : MonoBehaviour,IPointerClickHandler
     private bool skipFeeding; //テキスト送りをスキップして即座に文を出す
     private const int MAX_ROWS = 3; //テキストで一度に出せる行数
     private const int FEED_DELAY = 10; //文字送りディレイ(ミリ秒)
+    [SerializeField] private TextLogWindow logWindow;
 
     public void SetText(TextAsset asset)
     {
@@ -47,6 +48,9 @@ public class TextWindow : MonoBehaviour,IPointerClickHandler
 
     private async UniTask TextFeedAsync()
     {
+        //TODO:制御文字の実装
+        //たとえば、SEを鳴らしたいところに<SE ID=0>みたいに入れれるとそこを読んだときにSEが鳴る
+
         //文字送りで表示
         text.text = "";
         for (int j = 0; j < MAX_ROWS; j++)
@@ -74,5 +78,6 @@ public class TextWindow : MonoBehaviour,IPointerClickHandler
         skipFeeding = false;
         nowFeeding = false;
         cnt += MAX_ROWS;
+        logWindow.SetLogText(text.text); //ログに流す
     }
 }
