@@ -1,10 +1,12 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UniRx;
 
-public class PlayerState
+public static class PlayerState
 {
-    public int HP { get; set; } = 0;
-    public int Plase { get; set; } = 0;
-    public List<int> Items { get; set; } = new List<int>();
+    public static ReactiveProperty<int> HP { get; set; } = new ReactiveProperty<int>();
+    public static ReactiveProperty<int> Plase { get; set; } = new ReactiveProperty<int>();
+    public static List<int> Items { get; set; } = new List<int>();
 }
