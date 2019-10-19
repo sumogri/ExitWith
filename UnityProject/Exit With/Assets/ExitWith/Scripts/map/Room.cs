@@ -21,6 +21,7 @@ public class Room : MonoBehaviour,IComparable
     private Subject<Room> onMoveTo = new Subject<Room>();
     public Room[] Neighbors { get { return neighbors; } }
     [SerializeField] private Room[] neighbors;
+    
 
     public void Start()
     {
