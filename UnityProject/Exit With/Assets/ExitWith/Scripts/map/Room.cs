@@ -102,7 +102,9 @@ public class Room : MonoBehaviour,IComparable
     /// </summary>
     public void Enter()
     {
-        InitUIToVisit();
+        if (gameObject.activeInHierarchy)
+            InitUIToVisit();
+
         foreach(var n in neighbors)
         {
             n.Enterable();
@@ -118,7 +120,9 @@ public class Room : MonoBehaviour,IComparable
         if (visitState != VisitState.cannot)
             return;
 
-        InitUIToNonVisit();
+        if(gameObject.activeInHierarchy)
+            InitUIToNonVisit();
+
         visitState = VisitState.none;
     }
 

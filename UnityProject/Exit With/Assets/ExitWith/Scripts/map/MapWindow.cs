@@ -82,5 +82,12 @@ public class MapWindow : MonoBehaviour
         playerIcon.transform.position = rooms[roomId].gameObject.transform.position;
         playerIcon.transform.SetParent(rooms[roomId].gameObject.transform);
         rooms[roomId].Enter();
+
+        //階段なら
+        if(roomId == 12)
+        {
+            floor2Button.gameObject.SetActive(true);
+            floor1Button.gameObject.SetActive(true);
+        }
     }
 }
