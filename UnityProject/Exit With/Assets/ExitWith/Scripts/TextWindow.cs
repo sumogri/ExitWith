@@ -17,6 +17,7 @@ public class TextWindow : MonoBehaviour,IPointerClickHandler
     private const int MAX_ROWS = 3; //テキストで一度に出せる行数
     private const int FEED_DELAY = 10; //文字送りディレイ(ミリ秒)
     [SerializeField] private TextLogWindow logWindow;
+    [SerializeField] private GameObject feedEndMark;
 
     public void SetText(TextAsset asset)
     {
@@ -42,6 +43,7 @@ public class TextWindow : MonoBehaviour,IPointerClickHandler
             return;
         }
 
+        feedEndMark.SetActive(false);
         nowFeeding = true;
         TextFeedAsync();
     }
@@ -79,5 +81,6 @@ public class TextWindow : MonoBehaviour,IPointerClickHandler
         nowFeeding = false;
         cnt += MAX_ROWS;
         logWindow.SetLogText(text.text); //ログに流す
+        feedEndMark.SetActive(true);
     }
 }
