@@ -9,8 +9,11 @@ public class ItemWindow : MonoBehaviour
 {    
     [SerializeField] private ItemButton[] buttons;
     [SerializeField] private Text text;
-    [SerializeField] private RectTransform content;
+    [SerializeField] private RectTransform sclloreContent;
     [SerializeField] private Text itemname;
+    [SerializeField] private GameObject contentRoot;
+    public IObservable<Unit> OnCloseWindow => onCloseWindowSubject;
+    private Subject<Unit> onCloseWindowSubject = new Subject<Unit>();
 
     // Start is called before the first frame update
     void Start()
@@ -24,6 +27,22 @@ public class ItemWindow : MonoBehaviour
         PlayerState.Items.ObserveAdd().Subscribe(e => OnGetItem(e.Value));
     }
 
+    public void Activate()
+    {
+        contentRoot.SetActive(true);
+    }
+    public void Activate(ItemAsset asset)
+    {
+        Activate();
+        SetAsset(asset);
+    }
+
+    public void DisActivate()
+    {
+        contentRoot.SetActive(false);
+        onCloseWindowSubject.OnNext(Unit.Default);
+    }
+
     private void OnGetItem(int id)
     {
         buttons[id].gameObject.SetActive(true);
@@ -31,10 +50,15 @@ public class ItemWindow : MonoBehaviour
 
     private void OnPressed(ItemAsset asset)
     {
+        SetAsset(asset);
+    }
+
+    private void SetAsset(ItemAsset asset)
+    {
         text.text = asset.DetailsText;
-        Vector2 contetSize = content.sizeDelta;
+        Vector2 contetSize = sclloreContent.sizeDelta;
         contetSize.y = text.preferredHeight;
-        content.sizeDelta = contetSize;
+        sclloreContent.sizeDelta = contetSize;
         itemname.text = $"-{asset.ItemName}";
     }
 }

@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private MapWindow mapWindow;
     [SerializeField] private PlaceView placeView;
     [SerializeField] private ActionWindow actionWindow;
+    [SerializeField] private ItemWindow itemWindow;
 
     // Start is called before the first frame update
     void Start()
@@ -42,7 +43,7 @@ public class GameManager : MonoBehaviour
         //テキスト流し予約
         placeView.OnViewChanged.First().Subscribe(_ => {
             textWindow.SetText(text);
-            textWindow.OnAssetEnd.Subscribe(__ => {
+            textWindow.OnAssetEnd.First().Subscribe(__ => {
                 actionWindow.ActionActivate();
             });
         });
@@ -55,13 +56,36 @@ public class GameManager : MonoBehaviour
         if (room.isFinded)
             text = room.OnFindTexts[1];
 
-        room.Find();
-
         //テキスト流し予約
         textWindow.SetText(text);
-        textWindow.OnAssetEnd.Subscribe(_ => {
-            actionWindow.ActionActivate();
-        });
+
+        //アイテムを入手
+        if (room.GettableItem != null && !room.isFinded)
+        {
+            //拾う描写 => アイテムウィンドウ開く => 読後描写
+            PlayerState.Items.Add(room.GettableItem.ItemID);
+            textWindow.OnAssetEnd.First().Subscribe(_ =>
+            {
+                itemWindow.Activate(room.GettableItem);
+                itemWindow.OnCloseWindow.First().Subscribe(__ =>
+                {
+                    textWindow.SetText(room.GettableItem.ReactionText);
+                    textWindow.OnAssetEnd.First().Subscribe(___ =>
+                    {
+                        actionWindow.ActionActivate();
+                    });
+                });
+            });
+        }
+        else
+        {
+            textWindow.OnAssetEnd.First().Subscribe(_ =>
+            {
+                actionWindow.ActionActivate();
+            });
+        }
+
+        room.Find();
     }
 
     // Update is called once per frame

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UniRx;
 
 /// <summary>
 /// 行動の選択肢ウィンドウ
@@ -16,21 +17,22 @@ public class ActionWindow : MonoBehaviour
     [SerializeField] private GameObject yesNoButtons;
     [SerializeField] private Button yes;
     [SerializeField] private Button no;
+    [SerializeField] private ItemWindow itemWindow;
 
     // Start is called before the first frame update
     void Start()
     {
         find.onClick.AddListener(ActionDisActivate);
         move.onClick.AddListener(ActionDisActivate);
-        item.onClick.AddListener(ActionDisActivate);
+        item.onClick.AddListener(OnClickItemButton);
         ritual.onClick.AddListener(ActionDisActivate);
-
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnClickItemButton()
     {
-        
+        itemWindow.OnCloseWindow.First().Subscribe(_ => ActionActivate());
+        itemWindow.Activate();
+        ActionDisActivate();
     }
 
     public void ActionActivate()
