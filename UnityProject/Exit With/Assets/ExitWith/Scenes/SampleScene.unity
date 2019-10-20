@@ -2542,7 +2542,7 @@ MonoBehaviour:
   isRitualable: 1
   onRoomText: []
   onFindText: []
-  placeImage: {fileID: 21300000, guid: a8901390064bf26478033ec84b3104b7, type: 3}
+  placeImage: {fileID: 21300000, guid: 15fdc0fe25f1fb34ab4eae3134dc061a, type: 3}
   neighbors: []
   isOpenSpace: 0
   gettableItem: {fileID: 0}

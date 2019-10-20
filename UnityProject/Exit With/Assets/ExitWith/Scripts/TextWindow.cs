@@ -61,31 +61,38 @@ public class TextWindow : MonoBehaviour,IPointerClickHandler
 
     private async UniTask TextFeedAsync()
     {
-        //TODO:制御文字の実装
-        //たとえば、SEを鳴らしたいところに<SE ID=0>みたいに入れれるとそこを読んだときにSEが鳴る
-
         //文字送りで表示
         text.text = "";
+        var strpool = new string[MAX_ROWS];
+        int loadendJ = 0;
+
         for (int j = 0; j < MAX_ROWS; j++)
         {
             if (cnt + j >= textAsset.SplitedText.Length)
                 break;
-            
-            for (int i = 0; i < textAsset.SplitedText[cnt+j].Length && !skipFeeding; i++)
+
+            strpool[j] = textAsset.ReadLine(j + cnt);
+            loadendJ++;
+
+            for (int i = 0; i < strpool[j].Length && !skipFeeding; i++)
             {
                 await UniTask.Delay(FEED_DELAY);
-                text.text += textAsset.SplitedText[cnt+j][i];
+                text.text += strpool[j][i];
             }
             text.text += '\n';
         }
 
         //全文を表示
         text.text = "";
-        for(int j = 0; j < MAX_ROWS; j++) {
+        for(int j = 0 ; j < MAX_ROWS; j++) {
             if (cnt + j >= textAsset.SplitedText.Length)
                 break;
 
-            text.text += textAsset.SplitedText[cnt+j] + '\n';
+            if (j < loadendJ)
+                text.text += strpool[j] + '\n';
+
+            else
+                text.text += textAsset.ReadLine(cnt+j) + '\n';
         }
 
         skipFeeding = false;

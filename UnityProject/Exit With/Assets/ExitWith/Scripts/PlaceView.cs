@@ -13,13 +13,14 @@ public class PlaceView : MonoBehaviour
     [SerializeField] private Image placeImage;
     public IObservable<Unit> OnViewChanged { get { return onViewChanged; } } //画面切り替え終了通知
     private Subject<Unit> onViewChanged = new Subject<Unit>();
+    
     // Start is called before the first frame update
     void Start()
     {
-        PlayerState.Plase.Subscribe(async i => await OnMoved(map.Rooms[i]));
+        PlayerState.Plase.Subscribe(async i => await OnMoved(i));
     }
 
-    private async UniTask OnMoved(Room room)
+    private async UniTask OnMoved(int roomId)
     {
         placeText.text = "";
         Color color = Color.white;
@@ -33,8 +34,8 @@ public class PlaceView : MonoBehaviour
             placeImage.color = color;
             await UniTask.DelayFrame(1);
         }
-        placeText.text = room.RoomName;
-        placeImage.sprite = room.OwnPlaceImage;
+        placeText.text = map.Rooms[roomId].RoomName;
+        placeImage.sprite = map.Rooms[roomId].OwnPlaceImage;
 
         color.a = 0;
         time = 0;
@@ -46,11 +47,5 @@ public class PlaceView : MonoBehaviour
             await UniTask.DelayFrame(1);
         }
         onViewChanged.OnNext(Unit.Default);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
