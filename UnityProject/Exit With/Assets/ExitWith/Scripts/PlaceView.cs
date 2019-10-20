@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,6 +11,8 @@ public class PlaceView : MonoBehaviour
     [SerializeField] private MapWindow map;
     [SerializeField] private Text placeText;
     [SerializeField] private Image placeImage;
+    public IObservable<Unit> OnViewChanged { get { return onViewChanged; } } //画面切り替え終了通知
+    private Subject<Unit> onViewChanged = new Subject<Unit>();
     // Start is called before the first frame update
     void Start()
     {
@@ -42,6 +45,7 @@ public class PlaceView : MonoBehaviour
             placeImage.color = color;
             await UniTask.DelayFrame(1);
         }
+        onViewChanged.OnNext(Unit.Default);
     }
 
     // Update is called once per frame

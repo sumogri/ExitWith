@@ -20,7 +20,11 @@ public class ActionWindow : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        find.onClick.AddListener(ActionDisActivate);
+        move.onClick.AddListener(ActionDisActivate);
+        item.onClick.AddListener(ActionDisActivate);
+        ritual.onClick.AddListener(ActionDisActivate);
+
     }
 
     // Update is called once per frame
@@ -32,6 +36,10 @@ public class ActionWindow : MonoBehaviour
     public void ActionActivate()
     {
         actButtons.SetActive(true);
+    }
+    public void ActionDisActivate()
+    {
+        actButtons.SetActive(false);
     }
 
     public void YesNoActivate()

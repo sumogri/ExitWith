@@ -24,6 +24,7 @@ public class MapWindow : MonoBehaviour
     private GameObject[][] floorObjes = new GameObject[3][];
     private readonly string[] FLOOR_TEXT = { "-B1","-1F","-2F" };
     private int nowActiveFloor = 2;
+    [SerializeField] private GameObject contentRoot;
 
     // Start is called before the first frame update
     void Start()
@@ -73,7 +74,7 @@ public class MapWindow : MonoBehaviour
             return;
 
         onMoveTo.OnNext(room);
-        gameObject.SetActive(false);
+        contentRoot.SetActive(false);
 
         //test
         //OnMoved(room.RoomId);

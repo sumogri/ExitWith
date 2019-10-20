@@ -1,9 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UniRx;
 using UniRx.Async;
 using TMPro;
 
@@ -18,10 +20,16 @@ public class TextWindow : MonoBehaviour,IPointerClickHandler
     private const int FEED_DELAY = 10; //文字送りディレイ(ミリ秒)
     [SerializeField] private TextLogWindow logWindow;
     [SerializeField] private GameObject feedEndMark;
+    public IObservable<Unit> OnFeedEnd { get { return onFeedEnd; } }
+    private Subject<Unit> onFeedEnd = new Subject<Unit>();
+    public IObservable<Unit> OnAssetEnd => onAssetEnd;
+    private Subject<Unit> onAssetEnd = new Subject<Unit>();
+
 
     public void SetText(TextAsset asset)
     {
         textAsset = asset;
+        cnt = 0;
         TextFeed();
     }
 
@@ -32,6 +40,9 @@ public class TextWindow : MonoBehaviour,IPointerClickHandler
 
     private void TextFeed()
     {
+        if (textAsset == null)
+            return;
+
         if (nowFeeding)
         {
             skipFeeding = true;
@@ -82,5 +93,9 @@ public class TextWindow : MonoBehaviour,IPointerClickHandler
         cnt += MAX_ROWS;
         logWindow.SetLogText(text.text); //ログに流す        
         feedEndMark.SetActive(true);
+        onFeedEnd.OnNext(Unit.Default);
+
+        if (cnt >= textAsset.SplitedText.Length)
+            onAssetEnd.OnNext(Unit.Default);
     }
 }

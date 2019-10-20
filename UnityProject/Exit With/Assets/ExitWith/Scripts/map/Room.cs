@@ -13,9 +13,9 @@ public class Room : MonoBehaviour,IComparable
     [SerializeField] private int roomId;
     public bool IsRitualable { get { return isRitualable; } }
     [SerializeField] private bool isRitualable;
-    public TextAsset[] OnRoomText { get { return onRoomText; } }
+    public TextAsset[] OnEnterTexts { get { return onRoomText; } }
     [SerializeField] private TextAsset[] onRoomText;
-    public TextAsset[] OnFindText { get { return onFindText; } }
+    public TextAsset[] OnFindTexts { get { return onFindText; } }
     [SerializeField] private TextAsset[] onFindText;
     public Sprite OwnPlaceImage { get { return placeImage; } }
     [SerializeField] private Sprite placeImage;
@@ -31,8 +31,10 @@ public class Room : MonoBehaviour,IComparable
     private Color cannotEnterColor = Color.black; //隣接箇所にEnterしてない=入室できない場合
     private Color nonVisitedColor = new Color(0.594f,0.594f,0.594f); //入室はできるけど、入ってない場合
     private Color visitedColor = Color.white; //入ったことのある場合
+    public VisitState OwnVisitState => visitState;
     private VisitState visitState = VisitState.cannot;　//訪れたかどうか
-    private enum VisitState { cannot,none,visit }
+    public enum VisitState { cannot,none,visit }
+    public bool isFinded { get; private set; } = false;
 
     public void Awake()
     {
@@ -124,6 +126,14 @@ public class Room : MonoBehaviour,IComparable
             return;
 
         visitState = VisitState.none;
+    }
+
+    /// <summary>
+    /// 探索
+    /// </summary>
+    public void Find()
+    {
+        isFinded = true;
     }
 
     private void Pressed()
