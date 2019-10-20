@@ -35,6 +35,8 @@ public class Room : MonoBehaviour,IComparable
     private VisitState visitState = VisitState.cannot;　//訪れたかどうか
     public enum VisitState { cannot,none,visit }
     public bool isFinded { get; private set; } = false;
+    public ItemAsset GettableItem => gettableItem; //この部屋で手に入るアイテム
+    [SerializeField] private ItemAsset gettableItem;
 
     public void Awake()
     {

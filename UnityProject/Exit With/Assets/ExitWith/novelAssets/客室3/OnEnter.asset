@@ -10,8 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 935477cdb7cb0a84495f18c2343d264a, type: 3}
-  m_Name: OnEnter 1
+  m_Name: OnEnter
   m_EditorClassIdentifier: 
-  text: "\u5ECA\u4E0B\u3002\u5909\u308F\u308A\u306A\u3044\u3002\n\u6050\u308D\u3057\u304F\u9759\u304B\u3060\u3002"
-  SplitedText:
-  - "\u5ECA\u4E0B\u3002\u5909\u308F\u308A\u306A\u3044\u3002"
+  text: "\u5BA2\u5BA4\u3002\n\u4ED6\u306E\u90E8\u5C4B\u3068\u4F5C\u308A\u306F\u540C\u3058\u3060\u304C\u3001\u57C3\u306E\u7A4D\u3082\u308A\u304C\u8584\u3044\u3002"
+  SplitedText: []

@@ -18,12 +18,14 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //導入流し
         defaultRoom.Enter();
         mapWindow.OnMoveTo.Subscribe(OnMoveTo);
         placeView.OnViewChanged.First().Subscribe(_ => {
             textWindow.SetText(dounyuAsset);
             textWindow.OnAssetEnd.First().Subscribe(__ => {
                 actionWindow.ActionActivate();
+                PlayerState.Items.Add(0); //ケータイゲット
             });
         });
     }
