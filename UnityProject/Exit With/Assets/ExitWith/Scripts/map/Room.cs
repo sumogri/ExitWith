@@ -7,7 +7,7 @@ using UniRx;
 
 public class Room : MonoBehaviour,IComparable
 {
-    public string Name { get { return name; } }
+    public string RoomName { get { return name; } }
     [SerializeField] private string name;
     public int RoomId { get { return roomId; } }
     [SerializeField] private int roomId;
@@ -17,6 +17,8 @@ public class Room : MonoBehaviour,IComparable
     [SerializeField] private TextAsset[] onRoomText;
     public TextAsset[] OnFindText { get { return onFindText; } }
     [SerializeField] private TextAsset[] onFindText;
+    public Sprite OwnPlaceImage { get { return placeImage; } }
+    [SerializeField] private Sprite placeImage;
     public IObservable<Room> OnMoveTo { get { return onMoveTo; } }
     private Subject<Room> onMoveTo = new Subject<Room>();
     public Room[] Neighbors { get { return neighbors; } }
@@ -32,15 +34,19 @@ public class Room : MonoBehaviour,IComparable
     private VisitState visitState = VisitState.cannot;　//訪れたかどうか
     private enum VisitState { cannot,none,visit }
 
-    public void Start()
+    public void Awake()
     {
         ownButton = gameObject.GetComponent<Button>();
         ownButton.onClick.AddListener(Pressed);
         roomNameText = gameObject.GetComponentInChildren<Text>();
         roomConnections = gameObject.GetComponentsInChildren<Image>();
+    }
 
+    public void OnEnable()
+    {
         //訪問状態によるUI初期化
-        switch (visitState) {
+        switch (visitState)
+        {
             case VisitState.cannot:
                 InitUIToCannotVisit();
                 break;
@@ -72,7 +78,7 @@ public class Room : MonoBehaviour,IComparable
     private void InitUIToNonVisit()
     {
         if (isOpenSpace)
-            roomNameText.text = Name;
+            roomNameText.text = RoomName;
         else
             roomNameText.text = "???";
         ownButton.interactable = true;
@@ -89,7 +95,7 @@ public class Room : MonoBehaviour,IComparable
     private void InitUIToVisit()
     {
         ownButton.interactable = true;
-        roomNameText.text = Name;
+        roomNameText.text = RoomName;
         ownButton.image.color = visitedColor;
         foreach (var i in roomConnections)
         {
@@ -102,9 +108,6 @@ public class Room : MonoBehaviour,IComparable
     /// </summary>
     public void Enter()
     {
-        if (gameObject.activeInHierarchy)
-            InitUIToVisit();
-
         foreach(var n in neighbors)
         {
             n.Enterable();
@@ -119,9 +122,6 @@ public class Room : MonoBehaviour,IComparable
     {
         if (visitState != VisitState.cannot)
             return;
-
-        if(gameObject.activeInHierarchy)
-            InitUIToNonVisit();
 
         visitState = VisitState.none;
     }

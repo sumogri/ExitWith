@@ -80,7 +80,7 @@ public class TextWindow : MonoBehaviour,IPointerClickHandler
         skipFeeding = false;
         nowFeeding = false;
         cnt += MAX_ROWS;
-        logWindow.SetLogText(text.text); //ログに流す
+        logWindow.SetLogText(text.text); //ログに流す        
         feedEndMark.SetActive(true);
     }
 }

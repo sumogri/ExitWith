@@ -37,7 +37,7 @@ public class MapWindow : MonoBehaviour
         PlayerState.Plase.Subscribe(OnMoved);
 
         //test
-        onMoveTo.Subscribe(r => Debug.Log(r.Name));
+        onMoveTo.Subscribe(r => Debug.Log(r.RoomName));
         //
 
         floorObjes[0] = floorB1Objes;
@@ -68,9 +68,15 @@ public class MapWindow : MonoBehaviour
     /// <param name="room">目的地</param>
     private void MoveTo(Room room)
     {
+        //もし同じ場所に移動しようとしてるなら、無視
+        if (PlayerState.Plase.Value == room.RoomId)
+            return;
+
         onMoveTo.OnNext(room);
+        gameObject.SetActive(false);
+
         //test
-        OnMoved(room.RoomId);
+        //OnMoved(room.RoomId);
     }
 
     /// <summary>
@@ -84,7 +90,7 @@ public class MapWindow : MonoBehaviour
         rooms[roomId].Enter();
 
         //階段なら
-        if(roomId == 12)
+        if (roomId == 12)
         {
             floor2Button.gameObject.SetActive(true);
             floor1Button.gameObject.SetActive(true);
