@@ -69,11 +69,18 @@ public class GameManager : MonoBehaviour
                 itemWindow.Activate(room.GettableItem);
                 itemWindow.OnCloseWindow.First().Subscribe(__ =>
                 {
-                    textWindow.SetText(room.GettableItem.ReactionText);
-                    textWindow.OnAssetEnd.First().Subscribe(___ =>
+                    if (room.GettableItem.ReactionText != null)
+                    {
+                        textWindow.SetText(room.GettableItem.ReactionText);
+                        textWindow.OnAssetEnd.First().Subscribe(___ =>
+                        {
+                            actionWindow.ActionActivate();
+                        });
+                    }
+                    else
                     {
                         actionWindow.ActionActivate();
-                    });
+                    }
                 });
             });
         }

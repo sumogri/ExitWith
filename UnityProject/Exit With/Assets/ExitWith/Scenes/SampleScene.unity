@@ -3274,7 +3274,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u30DB\u30FC\u30EB"
+  m_Text: "\u30ED\u30D3\u30FC"
 --- !u!222 &472027297
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3892,7 +3892,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b5e360360c499a4c884b96b919763eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: "\u30DB\u30FC\u30EB"
+  name: "\u30ED\u30D3\u30FC"
   roomId: 11
   isRitualable: 0
   onRoomText: []
@@ -12920,6 +12920,16 @@ PrefabInstance:
       propertyPath: m_textInfo.pageCount
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5253701092651424461, guid: 8e6b01a834662aa47bbf764f96dd6fff,
+        type: 3}
+      propertyPath: m_firstOverflowCharacterIndex
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5253701092651424461, guid: 8e6b01a834662aa47bbf764f96dd6fff,
+        type: 3}
+      propertyPath: m_textInfo.materialCount
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5253701091559089407, guid: 8e6b01a834662aa47bbf764f96dd6fff,
         type: 3}
       propertyPath: m_Color.a
@@ -12929,6 +12939,12 @@ PrefabInstance:
         type: 3}
       propertyPath: m_overflowMode
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5253701090792127974, guid: 8e6b01a834662aa47bbf764f96dd6fff,
+        type: 3}
+      propertyPath: m_Name
+      value: TMP SubMeshUI [Nasu-Regular-20141215 SDF_ALL Material + LiberationSans
+        SDF Atlas]
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8e6b01a834662aa47bbf764f96dd6fff, type: 3}
