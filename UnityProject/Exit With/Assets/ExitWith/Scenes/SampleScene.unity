@@ -6600,7 +6600,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1000418372
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11099,7 +11099,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 2F
+  m_Text: 
 --- !u!222 &1799935032
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -12928,7 +12928,7 @@ PrefabInstance:
     - target: {fileID: 5253701092651424461, guid: 8e6b01a834662aa47bbf764f96dd6fff,
         type: 3}
       propertyPath: m_textInfo.materialCount
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5253701091559089407, guid: 8e6b01a834662aa47bbf764f96dd6fff,
         type: 3}

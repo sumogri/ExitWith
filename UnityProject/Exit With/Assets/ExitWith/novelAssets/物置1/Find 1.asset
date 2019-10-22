@@ -1,0 +1,15 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 935477cdb7cb0a84495f18c2343d264a, type: 3}
+  m_Name: Find 1
+  m_EditorClassIdentifier: 
+  text: "\u5C45\u5FC3\u5730\u306F\u3088\u3044\u3002\r\n\u3044\u308D\u3044\u308D\u7269\u306F\u3042\u308B\u304C\u3001\u3082\u3046\u3044\u3044\u3060\u308D\u3046\u3002\r\n"
