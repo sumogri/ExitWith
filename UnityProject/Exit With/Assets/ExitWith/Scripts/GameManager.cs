@@ -67,7 +67,7 @@ public class GameManager : MonoBehaviour
         textWindow.SetText(text);
 
         //アイテムを入手
-        if (room.GettableItem != null && !room.isFinded)
+        if (IsItemGetable(room)) //ここをいい感じに移譲すると入手条件いじれる
         {
             //拾う描写 => アイテムウィンドウ開く => 読後描写
             PlayerState.Items.Add(room.GettableItem.ItemID);
@@ -101,10 +101,12 @@ public class GameManager : MonoBehaviour
 
         room.Find();
     }
-
-    // Update is called once per frame
-    void Update()
+    private bool IsItemGetable(Room room)
     {
-        
+        //血濡れの客室は別条件
+        if (room.RoomId == 22)
+            return PlayerState.Items.Contains(8); //レポート所持
+
+        return room.GettableItem != null && !room.isFinded;
     }
 }
