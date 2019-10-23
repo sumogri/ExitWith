@@ -13,9 +13,9 @@ public class Room : MonoBehaviour, IComparable
     [SerializeField] private int roomId;
     public bool IsRitualable { get { return isRitualable; } }
     [SerializeField] private bool isRitualable;
-    public TextAsset[] OnEnterTexts { get { return onRoomText; } }
+    public TextAsset[] OnEnterTexts { get { return onRoomText; } set { onRoomText = value; } }
     [SerializeField] private TextAsset[] onRoomText;
-    public TextAsset[] OnFindTexts { get { return onFindText; } }
+    public TextAsset[] OnFindTexts { get { return onFindText; } set { onFindText = value; } }
     [SerializeField] private TextAsset[] onFindText;
     public Sprite OwnPlaceImage { get { return placeImage; } }
     [SerializeField] private Sprite placeImage;
@@ -34,7 +34,7 @@ public class Room : MonoBehaviour, IComparable
     public VisitState OwnVisitState => visitState;
     private VisitState visitState = VisitState.cannot;　//訪れたかどうか
     public enum VisitState { cannot, none, visit }
-    public bool isFinded { get; private set; } = false;
+    public bool isFinded { get; set; } = false;
     public IObservable<Room> OnFind => onFindSubject;
     private Subject<Room> onFindSubject = new Subject<Room>();
     public ItemAsset GettableItem => gettableItem; //この部屋で手に入るアイテム

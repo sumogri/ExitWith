@@ -20,3 +20,4 @@ MonoBehaviour:
   itemName: "\u5148\u4EBA\u306E\u624B\u8A18"
   reactionText: {fileID: 11400000, guid: 5e7d38d871fdce6439202885d02fd311, type: 2}
   itemID: 1
+  battleText: {fileID: 11400000, guid: a1aa619a31f72954d80867a658282e5a, type: 2}

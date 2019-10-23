@@ -14,4 +14,7 @@ public class ItemAsset : ScriptableObject
 
     public int ItemID => itemID;
     [SerializeField] int itemID;
+
+    public TextAsset BattleText => battleText;
+    [SerializeField] private TextAsset battleText;//戦闘時に使用したときのリアクション
 }

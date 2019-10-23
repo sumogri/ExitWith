@@ -18,14 +18,34 @@ public class ActionWindow : MonoBehaviour
     [SerializeField] private Button yes;
     [SerializeField] private Button no;
     [SerializeField] private ItemWindow itemWindow;
+    [SerializeField] private MapWindow mapWindow;
+    [SerializeField] private TextWindow textWindow;
 
     // Start is called before the first frame update
     void Start()
     {
         find.onClick.AddListener(ActionDisActivate);
-        move.onClick.AddListener(ActionDisActivate);
+        move.onClick.AddListener(OnClickMoveButton);
         item.onClick.AddListener(OnClickItemButton);
         ritual.onClick.AddListener(ActionDisActivate);
+    }
+    private void OnClickMoveButton()
+    {
+        mapWindow.OnCloseWindow.First().Subscribe(r => {
+            if (r == null)
+            {
+                ActionActivate();
+            }
+            else
+            {
+                textWindow.OnAssetEnd.First().Subscribe(__ =>
+                {
+                    ActionActivate();
+                });
+            }
+        });
+        mapWindow.Activate();
+        ActionDisActivate();
     }
 
     private void OnClickItemButton()

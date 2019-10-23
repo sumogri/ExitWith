@@ -16,3 +16,4 @@ MonoBehaviour:
   itemName: "\u9244\u306E\u5263"
   reactionText: {fileID: 0}
   itemID: 5
+  battleText: {fileID: 11400000, guid: d8b14917bbce1a144accb2596081d535, type: 2}

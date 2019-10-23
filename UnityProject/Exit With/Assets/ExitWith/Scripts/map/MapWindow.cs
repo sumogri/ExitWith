@@ -26,6 +26,8 @@ public class MapWindow : MonoBehaviour
     private int nowActiveFloor = 2;
     [SerializeField] private GameObject contentRoot;
     [SerializeField] private Room toB1Room;
+    public IObservable<Room> OnCloseWindow => onCloseWindowSubject;
+    private Subject<Room> onCloseWindowSubject = new Subject<Room>();
 
     // Start is called before the first frame update
     void Start()
@@ -78,7 +80,7 @@ public class MapWindow : MonoBehaviour
             return;
 
         onMoveTo.OnNext(room);
-        contentRoot.SetActive(false);
+        CloseWindow(room);
 
         //test
         //OnMoved(room.RoomId);
@@ -103,6 +105,21 @@ public class MapWindow : MonoBehaviour
             floor2Button.gameObject.SetActive(true);
             floor1Button.gameObject.SetActive(true);
         }
+    }
+
+    public void Activate()
+    {
+        contentRoot.SetActive(true);
+    }
+
+    public void CloseWindow()
+    {
+        CloseWindow(null);
+    }
+    public void CloseWindow(Room room)
+    {
+        contentRoot.SetActive(false);
+        onCloseWindowSubject.OnNext(room);
     }
 
     public void UnlockB1()

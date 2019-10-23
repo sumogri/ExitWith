@@ -27,10 +27,10 @@ public class RoomLock : MonoBehaviour
 
         switch (locktype)
         {
-            case Locktype.charm:
+            case Locktype.key:
                 locked = !PlayerState.Items.Contains(9);
                 break;
-            case Locktype.key:
+            case Locktype.charm:
                 locked = !PlayerState.IsCharming.Value;
                 break;
         }

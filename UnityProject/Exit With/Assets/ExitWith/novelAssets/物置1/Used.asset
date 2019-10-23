@@ -1,0 +1,15 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 935477cdb7cb0a84495f18c2343d264a, type: 3}
+  m_Name: Used
+  m_EditorClassIdentifier: 
+  text: "\u9244\u306E\u5263\u3092\u53D6\u308A\u51FA\u3057\u3001\u5207\u308A\u304B\u304B\u308B\u3002\r\n\u7D20\u4EBA\u306E\u65AC\u6483\u3067\u3042\u3063\u305F\u304C\u3001\u8150\u3063\u305F\u8089\u3092\u7D76\u3064\u306B\u306F\u5341\u5206\u3060\u3063\u305F\u3002\r\n\u30BE\u30F3\u30D3\u306E\u8155\u304C\u5B99\u3092\u821E\u3046\u3002\r\n\u300C\u3088\u3057\u2026\u2026!?\u300D\r\n\u77AC\u9593\u3001\u305D\u306E\u65AD\u9762\u304B\u3089\u8150\u8089\u304C\u76DB\u308A\u4E0A\u304C\u308A\u3001\u5143\u901A\u308A\u306E\u8155\u306E\u5F62\u3092\u306A\u3059\u3002\r\n\u751F\u8005\u3067\u3055\u3048\u3042\u308A\u3048\u306A\u3044\u56DE\u5FA9\u3092\u3001\u3053\u306E\u6B7B\u4F53\u306F\u898B\u305B\u305F\u3002<LifeDamm><ItemOpen>"

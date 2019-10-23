@@ -6,7 +6,7 @@ using UniRx;
 
 public static class PlayerState
 {
-    public static ReactiveProperty<int> HP { get; private set; } = new ReactiveProperty<int>();
+    public static ReactiveProperty<int> HP { get; private set; } = new ReactiveProperty<int>(3);
     public static int Place {
         get { return placeId; }
         set {

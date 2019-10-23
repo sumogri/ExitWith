@@ -24,7 +24,7 @@ public class ItemWindow : MonoBehaviour
             b.OnPressedObservable.Subscribe(OnPressed);
             b.gameObject.SetActive(false);
         }
-        PlayerState.Items.ObserveAdd().Subscribe(e => OnGetItem(e.Value));
+        PlayerState.Items.ObserveAdd().Subscribe(e => OnGetItem(e.Value)).AddTo(gameObject);
     }
 
     public void Activate()

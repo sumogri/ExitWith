@@ -15,13 +15,21 @@ public class GameManager : MonoBehaviour
     [SerializeField] private PlaceView placeView;
     [SerializeField] private ActionWindow actionWindow;
     [SerializeField] private ItemWindow itemWindow;
+    [SerializeField] private BattleWindow battleWindow;
 
     // Start is called before the first frame update
     void Start()
     {
         //導入流し
         PlayerState.Place = defaultRoom.RoomId;
-        mapWindow.OnMoveTo.Subscribe(OnMoveTo);
+        mapWindow.OnMoveTo.Subscribe(Move);
+        battleWindow.OnPressButtonObservable.Subscribe(i => {
+            if (i == null)
+                ExitBattle();
+            else
+                UseItem(i);
+        });
+        //最初の入場はUI外から来るので、ここでさばく
         placeView.OnViewChanged.First().Subscribe(_ => {
             textWindow.SetText(dounyuAsset);
             textWindow.OnAssetEnd.First().Subscribe(__ => {
@@ -31,7 +39,7 @@ public class GameManager : MonoBehaviour
         });
     }
 
-    private void OnMoveTo(Room room)
+    private void Move(Room room)
     {
         var text = room.OnEnterTexts[0];
         //もし入ったことがあるなら
@@ -63,32 +71,30 @@ public class GameManager : MonoBehaviour
         if (room.isFinded)
             text = room.OnFindTexts[1];
 
-        //テキスト流し予約
+        if (battleWindow.IsWon && room == battleWindow.BattleRoom) //勝利後バトルルームだけ処理違い
+        {
+            if (IsItemGetable(room))
+                text = room.OnFindTexts[1];
+            else
+                text = room.OnFindTexts[0];
+        }
+
         textWindow.SetText(text);
 
         //アイテムを入手
         if (IsItemGetable(room)) //ここをいい感じに移譲すると入手条件いじれる
         {
             //拾う描写 => アイテムウィンドウ開く => 読後描写
-            PlayerState.Items.Add(room.GettableItem.ItemID);
             textWindow.OnAssetEnd.First().Subscribe(_ =>
             {
-                itemWindow.Activate(room.GettableItem);
-                itemWindow.OnCloseWindow.First().Subscribe(__ =>
-                {
-                    if (room.GettableItem.ReactionText != null)
-                    {
-                        textWindow.SetText(room.GettableItem.ReactionText);
-                        textWindow.OnAssetEnd.First().Subscribe(___ =>
-                        {
-                            actionWindow.ActionActivate();
-                        });
-                    }
-                    else
-                    {
-                        actionWindow.ActionActivate();
-                    }
-                });
+                GetItem(room.GettableItem);
+            });
+        }
+        else if (!battleWindow.IsWon && room == battleWindow.BattleRoom)
+        {
+            textWindow.OnAssetEnd.First().Subscribe(_ =>
+            {
+                battleWindow.Activate();
             });
         }
         else
@@ -101,6 +107,57 @@ public class GameManager : MonoBehaviour
 
         room.Find();
     }
+
+    private void GetItem(ItemAsset item)
+    {
+        //拾う描写 => アイテムウィンドウ開く => 読後描写
+        PlayerState.Items.Add(item.ItemID);
+        itemWindow.Activate(item);
+        itemWindow.OnCloseWindow.First().Subscribe(__ =>
+        {
+            if (item.ReactionText != null)
+            {
+                textWindow.SetText(item.ReactionText);
+                textWindow.OnAssetEnd.First().Subscribe(___ =>
+                {
+                    actionWindow.ActionActivate();
+                });
+            }
+            else
+            {
+                actionWindow.ActionActivate();
+            }
+        });
+    }
+    
+
+    private void UseItem(ItemAsset item)
+    {
+        textWindow.SetText(item.BattleText);
+        
+        textWindow.OnAssetEnd.First().Subscribe(_ =>
+        {
+            if (battleWindow.IsWon)
+            {
+                GetItem(battleWindow.WinDropItem);
+            }
+            else
+            {
+                battleWindow.Activate();
+            }
+            
+        });
+    }
+    private void ExitBattle()
+    {
+        //バトルから逃げ出す
+        mapWindow.Activate(); //マップ開いて
+        mapWindow.OnCloseWindow.First().Subscribe(x => {
+            if (x == null)
+                battleWindow.Activate(); //マップが閉じた時、どこにも行かないなら戦闘続行
+        });
+    }
+
     private bool IsItemGetable(Room room)
     {
         //血濡れの客室は別条件

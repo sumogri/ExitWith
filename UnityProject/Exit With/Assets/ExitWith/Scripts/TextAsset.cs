@@ -1,9 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Linq;
 using UnityEngine;
 using UnityEditor;
+using UniRx;
 
 /// <summary>
 /// 一連単位のテキストアセット
@@ -18,6 +20,11 @@ public class TextAsset : ScriptableObject
     [SerializeField, TextArea(1,100)] private string text;
     public string[] SplitedText { get; private set; }
     private static Regex regex = new Regex("<[^<>]*>");
+    //パースした制御文字に対応するsubject群
+    public static IObservable<string> OnControle => onControlReadSubject;
+    private static Subject<string> onControlReadSubject = new Subject<string>();
+    public static IObservable<bool> OnZonbi => onZonbiEnterSubject; //t=on ,f=off
+    private static Subject<bool> onZonbiEnterSubject = new Subject<bool>();
 
     public void OnEnable()
     {
@@ -35,13 +42,22 @@ public class TextAsset : ScriptableObject
         //制御文字のパース
         //制御文字一覧
         //<SE [id]> id番目のSEを鳴らす
-        //<ENEMY> 敵立ち絵を出す
+        //<ZONBION> 敵立ち絵を出す
         var tmp = SplitedText[i];
         var ms = regex.Matches(tmp);
         foreach(Match m in ms)
         {
-            Debug.Log($"{m.Value},{m.Value.Contains("SE")},{m.Value.Contains("ENEMY")}");
-            
+            Debug.Log($"{m.Value}");
+            if (m.Value.Contains("ZONBION"))
+            {
+                onZonbiEnterSubject.OnNext(true);
+            }
+            else if (m.Value.Contains("ZONBIOFF"))
+            {
+                onZonbiEnterSubject.OnNext(false);
+            }
+
+            onControlReadSubject.OnNext(m.Value);
         }
 
         return regex.Replace(SplitedText[i],"");
