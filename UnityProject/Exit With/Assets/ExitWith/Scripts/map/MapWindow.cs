@@ -25,6 +25,7 @@ public class MapWindow : MonoBehaviour
     private readonly string[] FLOOR_TEXT = { "-B1","-1F","-2F" };
     private int nowActiveFloor = 2;
     [SerializeField] private GameObject contentRoot;
+    [SerializeField] private Room toB1Room;
 
     // Start is called before the first frame update
     void Start()
@@ -35,10 +36,13 @@ public class MapWindow : MonoBehaviour
         {
             r.OnMoveTo.Subscribe(MoveTo);
         }
-        PlayerState.Plase.Subscribe(OnMoved);
+        PlayerState.OnPlaceChange.Subscribe(OnMoved);
+
+        //地下1階解除
+        toB1Room.OnFind.First(r => r.isFinded).Subscribe(_ => UnlockB1());
 
         //test
-        onMoveTo.Subscribe(r => Debug.Log(r.RoomName));
+        onMoveTo.Subscribe(r => Debug.Log($"moveto:{r.RoomName}"));
         //
 
         floorObjes[0] = floorB1Objes;
@@ -70,7 +74,7 @@ public class MapWindow : MonoBehaviour
     private void MoveTo(Room room)
     {
         //もし同じ場所に移動しようとしてるなら、無視
-        if (PlayerState.Plase.Value == room.RoomId)
+        if (PlayerState.Place == room.RoomId)
             return;
 
         onMoveTo.OnNext(room);
@@ -89,6 +93,9 @@ public class MapWindow : MonoBehaviour
         playerIcon.transform.position = rooms[roomId].gameObject.transform.position;
         playerIcon.transform.SetParent(rooms[roomId].gameObject.transform);
         rooms[roomId].Enter();
+        //debug
+        Debug.Log($"moved:{rooms[roomId].RoomName}");
+        //
 
         //階段なら
         if (roomId == 12)
@@ -96,5 +103,10 @@ public class MapWindow : MonoBehaviour
             floor2Button.gameObject.SetActive(true);
             floor1Button.gameObject.SetActive(true);
         }
+    }
+
+    public void UnlockB1()
+    {
+        floorB1Button.gameObject.SetActive(true);
     }
 }

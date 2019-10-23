@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         //導入流し
-        defaultRoom.Enter();
+        PlayerState.Place = defaultRoom.RoomId;
         mapWindow.OnMoveTo.Subscribe(OnMoveTo);
         placeView.OnViewChanged.First().Subscribe(_ => {
             textWindow.SetText(dounyuAsset);
@@ -38,7 +38,14 @@ public class GameManager : MonoBehaviour
         if (room.OwnVisitState == Room.VisitState.visit)
             text = room.OnEnterTexts[1];
 
-        PlayerState.Plase.Value = room.RoomId; //入室,周り回ってEnterをコール    
+        //カギがかかっていれば
+        if (room.Lock != null && room.Lock.IsLocked())
+        {
+            text = room.Lock.OnLockedText;
+            room = room.Lock.FrontRoom;
+        }
+
+        PlayerState.Place = room.RoomId; //入室,周り回ってEnterをコール    
         
         //テキスト流し予約
         placeView.OnViewChanged.First().Subscribe(_ => {
@@ -51,7 +58,7 @@ public class GameManager : MonoBehaviour
 
     public void Find()
     {
-        var room = mapWindow.Rooms[PlayerState.Plase.Value];
+        var room = mapWindow.Rooms[PlayerState.Place];
         var text = room.OnFindTexts[0];
         if (room.isFinded)
             text = room.OnFindTexts[1];

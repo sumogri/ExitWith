@@ -17,7 +17,7 @@ public class PlaceView : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        PlayerState.Plase.Subscribe(async i => await OnMoved(i));
+        PlayerState.OnPlaceChange.Subscribe(async i => await OnMoved(i));
     }
 
     private async UniTask OnMoved(int roomId)

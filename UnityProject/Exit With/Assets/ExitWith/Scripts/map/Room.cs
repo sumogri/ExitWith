@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UniRx;
 
-public class Room : MonoBehaviour,IComparable
+public class Room : MonoBehaviour, IComparable
 {
     public string RoomName { get { return name; } }
     [SerializeField] private string name;
@@ -29,14 +29,17 @@ public class Room : MonoBehaviour,IComparable
     private Image[] roomConnections;
     private Button ownButton;
     private Color cannotEnterColor = Color.black; //隣接箇所にEnterしてない=入室できない場合
-    private Color nonVisitedColor = new Color(0.594f,0.594f,0.594f); //入室はできるけど、入ってない場合
+    private Color nonVisitedColor = new Color(0.594f, 0.594f, 0.594f); //入室はできるけど、入ってない場合
     private Color visitedColor = Color.white; //入ったことのある場合
     public VisitState OwnVisitState => visitState;
     private VisitState visitState = VisitState.cannot;　//訪れたかどうか
-    public enum VisitState { cannot,none,visit }
+    public enum VisitState { cannot, none, visit }
     public bool isFinded { get; private set; } = false;
+    public IObservable<Room> OnFind => onFindSubject;
+    private Subject<Room> onFindSubject = new Subject<Room>();
     public ItemAsset GettableItem => gettableItem; //この部屋で手に入るアイテム
     [SerializeField] private ItemAsset gettableItem = null;
+    public RoomLock Lock { get; private set; } = null;
 
     public void Awake()
     {
@@ -44,6 +47,7 @@ public class Room : MonoBehaviour,IComparable
         ownButton.onClick.AddListener(Pressed);
         roomNameText = gameObject.GetComponentInChildren<Text>();
         roomConnections = gameObject.GetComponentsInChildren<Image>();
+        Lock = gameObject.GetComponent<RoomLock>();
     }
 
     public void OnEnable()
@@ -135,6 +139,7 @@ public class Room : MonoBehaviour,IComparable
     /// </summary>
     public void Find()
     {
+        onFindSubject.OnNext(this);
         isFinded = true;
     }
 
