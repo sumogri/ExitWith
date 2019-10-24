@@ -26,6 +26,8 @@ public class BattleWindow : MonoBehaviour
     private Subject<ItemAsset> onPressButtonSubject = new Subject<ItemAsset>();
     public ItemAsset WinDropItem => winDrop;
     [SerializeField] private ItemAsset winDrop;
+    public TextAsset DeadText => deadText;
+    [SerializeField] private TextAsset deadText;
 
     // Start is called before the first frame update
     void Start()

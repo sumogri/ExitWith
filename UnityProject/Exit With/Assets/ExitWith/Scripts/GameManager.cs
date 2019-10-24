@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
+using UniRx.Async;
 
 /// <summary>
 /// シナリオの流れを司る
@@ -16,6 +17,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private ActionWindow actionWindow;
     [SerializeField] private ItemWindow itemWindow;
     [SerializeField] private BattleWindow battleWindow;
+    [SerializeField] private EndWindow endWindow;
 
     // Start is called before the first frame update
     void Start()
@@ -141,11 +143,18 @@ public class GameManager : MonoBehaviour
             {
                 GetItem(battleWindow.WinDropItem);
             }
+            else if (PlayerState.HP.Value == 0)
+            {
+                textWindow.SetText(battleWindow.DeadText);
+                textWindow.OnAssetEnd.First().Subscribe(async __ => {
+                    await UniTask.Delay(1000);
+                    endWindow.ActivateEndWindow(EndWindow.EndKind.bad1);
+                });
+            }
             else
             {
                 battleWindow.Activate();
-            }
-            
+            }            
         });
     }
     private void ExitBattle()
