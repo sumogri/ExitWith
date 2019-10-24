@@ -162,7 +162,7 @@ public class GameManager : MonoBehaviour
     {
         //血濡れの客室は別条件
         if (room.RoomId == 22)
-            return PlayerState.Items.Contains(8); //レポート所持
+            return PlayerState.Items.Contains(8) && !PlayerState.Items.Contains(10); //レポート所持&血未所持
 
         return room.GettableItem != null && !room.isFinded;
     }

@@ -72,6 +72,10 @@ public class BattleWindow : MonoBehaviour
     public void Activate()
     {
         contentRoot.SetActive(true);
+        foreach(var i in itemButtons)
+        {
+            i.gameObject.SetActive(PlayerState.Items.Contains(i.ItemID));
+        }
     }
 
     private void InitRoomTexts()
