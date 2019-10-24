@@ -13,7 +13,8 @@ public class PlaceView : MonoBehaviour
     [SerializeField] private Image placeImage;
     public IObservable<Unit> OnViewChanged { get { return onViewChanged; } } //画面切り替え終了通知
     private Subject<Unit> onViewChanged = new Subject<Unit>();
-    
+    [SerializeField] private Image[] textImages; //テキストから制御される画像
+
     // Start is called before the first frame update
     void Start()
     {

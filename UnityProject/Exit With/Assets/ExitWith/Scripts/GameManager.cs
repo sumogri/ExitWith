@@ -156,11 +156,32 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// 単位時間経過,次のアクションを待つ
     /// </summary>
-    private void ActionEndWithWaitAct()
+    private async UniTask ActionEndWithWaitAct()
     {
+        var preDepth = charmTimer.NowDepth;
         PlayerState.TimeStep.Value++;
-        actionWindow.ActionActivate();
-    }
+
+        if (PlayerState.IsCharming.Value
+            && preDepth != charmTimer.NowDepth)
+        {
+            if (charmTimer.NowDepth == CharmTimer.CharmDepth.dead)
+                PlayerState.IsEnd = true;
+
+            await UniTask.Delay(1000);
+            textWindow.SetText(charmTimer.GetText(charmTimer.NowDepth));
+            textWindow.OnAssetEnd.First().Subscribe(__ =>
+            {
+                if (charmTimer.NowDepth == CharmTimer.CharmDepth.dead)
+                    endWindow.ActivateEndWindow(EndWindow.EndKind.bad2);
+                else
+                    actionWindow.ActionActivate();
+            });
+        }
+        else
+        {
+            actionWindow.ActionActivate();
+        }
+    }    
 
     private void GetItem(ItemAsset item)
     {
@@ -197,10 +218,11 @@ public class GameManager : MonoBehaviour
             }
             else if (PlayerState.HP.Value == 0)
             {
+                PlayerState.IsEnd = true;
                 await UniTask.Delay(1000); //Setすると問答無用でテキスト送りが入っちゃうので待ち
                 textWindow.SetText(battleWindow.DeadText);
                 textWindow.OnAssetEnd.First().Subscribe(async __ => {
-                    await UniTask.Delay(1000);
+                    await UniTask.Delay(1000);                    
                     endWindow.ActivateEndWindow(EndWindow.EndKind.bad1);
                 });
             }

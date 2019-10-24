@@ -21,6 +21,7 @@ public class ActionWindow : MonoBehaviour
     [SerializeField] private ItemWindow itemWindow;
     [SerializeField] private MapWindow mapWindow;
     [SerializeField] private TextWindow textWindow;
+
     public IObservable<Unit> OnRetual => onRitualSubject;
     private Subject<Unit> onRitualSubject = new Subject<Unit>();
 
@@ -52,7 +53,7 @@ public class ActionWindow : MonoBehaviour
             {
                 ActionActivate();
             }
-            else if(r.RoomId != 0) //出口じゃないなら
+            else if(PlayerState.IsEnd) //エンディングにたどりついてないなら
             {
                 textWindow.OnAssetEnd.First().Subscribe(__ =>
                 {

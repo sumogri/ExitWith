@@ -20,7 +20,7 @@ public static class PlayerState
     public static ReactiveCollection<int> Items { get; private set; } = new ReactiveCollection<int>();
     public static ReactiveProperty<bool> IsCharming { get; private set; } = new ReactiveProperty<bool>(true);
     public static ReactiveProperty<int> TimeStep { get; private set; } = new ReactiveProperty<int>(0);
-
+    public static bool IsEnd { get; set; } = false;
 
     public static void InitState()
     {
@@ -29,5 +29,6 @@ public static class PlayerState
         Items = new ReactiveCollection<int>();
         IsCharming = new ReactiveProperty<bool>(true);
         TimeStep = new ReactiveProperty<int>();
+        IsEnd = false;
     }
 }

@@ -5996,7 +5996,7 @@ MonoBehaviour:
   endWindow: {fileID: 2065596498}
   ritualSuc: {fileID: 11400000, guid: 1aaf49b88ac51f149975c8c191881cbc, type: 2}
   ritualFal: {fileID: 11400000, guid: 3bbd2e1bca93e614aafa34487984f7f8, type: 2}
-  charmTimer: {fileID: 0}
+  charmTimer: {fileID: 543890427}
 --- !u!4 &536607961
 Transform:
   m_ObjectHideFlags: 0
@@ -7578,6 +7578,7 @@ MonoBehaviour:
   map: {fileID: 1525539897}
   placeText: {fileID: 122099330}
   placeImage: {fileID: 1620155398}
+  textImages: []
 --- !u!1 &700385118
 GameObject:
   m_ObjectHideFlags: 0
@@ -21156,6 +21157,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: TMP SubMeshUI [Nasu-Regular-20141215 SDF_ALL Material + LiberationSans
         SDF Atlas]
+      objectReference: {fileID: 0}
+    - target: {fileID: 5253701091786578953, guid: 8e6b01a834662aa47bbf764f96dd6fff,
+        type: 3}
+      propertyPath: m_Text
+      value: click / Enter
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8e6b01a834662aa47bbf764f96dd6fff, type: 3}
