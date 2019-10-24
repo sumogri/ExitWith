@@ -28,6 +28,8 @@ public class TextAsset : ScriptableObject
     private static Subject<bool> onZonbiEnterSubject = new Subject<bool>();
     public static IObservable<int> OnRoom => onRoomSubject;
     private static Subject<int> onRoomSubject = new Subject<int>();
+    public static IObservable<int> OnDamage => onDamageSubject;
+    private static Subject<int> onDamageSubject = new Subject<int>();
 
     public void OnEnable()
     {
@@ -64,6 +66,12 @@ public class TextAsset : ScriptableObject
                 var id = int.Parse(paramRegex.Match(m.Value).Value);
                 Debug.Log(id);
                 onRoomSubject.OnNext(id);
+            }
+            else if (m.Value.Contains("DAMAGE"))
+            {
+                var id = int.Parse(paramRegex.Match(m.Value).Value);
+                Debug.Log(id);
+                onDamageSubject.OnNext(id);
             }
 
             onControlReadSubject.OnNext(m.Value);

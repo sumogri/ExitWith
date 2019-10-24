@@ -15,12 +15,14 @@ public class PlaceView : MonoBehaviour
     private Subject<Unit> onViewChanged = new Subject<Unit>();
     [SerializeField] private Sprite[] textImages; //テキストから制御される部屋画像
     [SerializeField] private string[] textName; //テキストから制御される部屋名
+    [SerializeField] private GameObject[] damageObjs; //テキストから制御されるダメージエフェクト
 
     // Start is called before the first frame update
     void Start()
     {
         PlayerState.OnPlaceChange.Subscribe(async i => await OnMoved(i));
-        TextAsset.OnRoom.Subscribe(async i => await ChangePlace(textImages[i],textName[i]));
+        TextAsset.OnRoom.Subscribe(async i => await ChangePlace(textImages[i],textName[i])).AddTo(gameObject);
+        TextAsset.OnDamage.Subscribe(i => damageObjs[i].SetActive(true)).AddTo(gameObject);
     }
 
     private async UniTask OnMoved(int roomId)
