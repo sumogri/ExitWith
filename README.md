@@ -15,6 +15,8 @@ Unity 1 week 「さがす」 投稿作品
 - 魔女写真 ,[RondelMelling](https://pixabay.com/ja/users/RondellMelling-57942/?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=539683)
 - 夜明け前の空のフリー画像（写真) ,[ぱくたそ](https://www.pakutaso.com/20190233057post-19757.html),[ライセンス](https://www.pakutaso.com/userpolicy.html)
 - 館内写真, [背景写真補完の会](http://masato.ciao.jp/haikei/furemu.html)
+- サウンド(SE/BGM) , 魔王魂
+- サウンド(SE/BGM) , 効果音ラボ
 
 また、以下のアセットを使用したファイルを含みます。
 - Fractal Wings,[flashtuchka](https://www.deviantart.com/flashtuchka/art/Fractal-Wings-104923394)
