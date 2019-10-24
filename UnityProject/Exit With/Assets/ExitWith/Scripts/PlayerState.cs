@@ -18,5 +18,16 @@ public static class PlayerState
     public static IObservable<int> OnPlaceChange => onPlaceChangeSubject;
     private static BehaviorSubject<int> onPlaceChangeSubject = new BehaviorSubject<int>(19);
     public static ReactiveCollection<int> Items { get; private set; } = new ReactiveCollection<int>();
-    public static ReactiveProperty<bool> IsCharming { get; private set; } = new ReactiveProperty<bool>();
+    public static ReactiveProperty<bool> IsCharming { get; private set; } = new ReactiveProperty<bool>(true);
+    public static ReactiveProperty<int> TimeStep { get; private set; } = new ReactiveProperty<int>(0);
+
+
+    public static void InitState()
+    {
+        HP = new ReactiveProperty<int>(3);
+        onPlaceChangeSubject = new BehaviorSubject<int>(19);
+        Items = new ReactiveCollection<int>();
+        IsCharming = new ReactiveProperty<bool>(true);
+        TimeStep = new ReactiveProperty<int>();
+    }
 }

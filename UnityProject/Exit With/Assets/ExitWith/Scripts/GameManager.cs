@@ -6,6 +6,7 @@ using UniRx.Async;
 
 /// <summary>
 /// シナリオの流れを司る
+/// ルームの違いを強引にハンドリングしてるのがキモいが、とりあえず
 /// </summary>
 public class GameManager : MonoBehaviour
 {
@@ -18,10 +19,15 @@ public class GameManager : MonoBehaviour
     [SerializeField] private ItemWindow itemWindow;
     [SerializeField] private BattleWindow battleWindow;
     [SerializeField] private EndWindow endWindow;
+    [SerializeField] private TextAsset ritualSuc;
+    [SerializeField] private TextAsset ritualFal;
+    [SerializeField] private CharmTimer charmTimer;
 
     // Start is called before the first frame update
     void Start()
     {
+        actionWindow.OnRetual.Subscribe(_ => Ritual());
+
         //導入流し
         PlayerState.Place = defaultRoom.RoomId;
         mapWindow.OnMoveTo.Subscribe(Move);
@@ -41,6 +47,25 @@ public class GameManager : MonoBehaviour
         });
     }
 
+    private void Ritual()
+    {
+        var text = ritualFal;
+        var nowRoom = mapWindow.Rooms[PlayerState.Place];
+        //儀式可能なら
+        if (nowRoom.IsRitualable
+            && (PlayerState.Items.Contains(10) || nowRoom.RoomId == 22))
+        {
+            text = ritualSuc;
+            PlayerState.IsCharming.Value = false;
+        }
+
+        textWindow.SetText(text);
+        textWindow.OnAssetEnd.First().Subscribe(__ =>
+        {
+            ActionEndWithWaitAct();
+        });
+    }
+
     private void Move(Room room)
     {
         var text = room.OnEnterTexts[0];
@@ -56,14 +81,32 @@ public class GameManager : MonoBehaviour
         }
 
         PlayerState.Place = room.RoomId; //入室,周り回ってEnterをコール    
-        
-        //テキスト流し予約
-        placeView.OnViewChanged.First().Subscribe(_ => {
-            textWindow.SetText(text);
-            textWindow.OnAssetEnd.First().Subscribe(__ => {
-                actionWindow.ActionActivate();
+
+        //出口
+        if (room.RoomId == 0)
+        {
+            placeView.OnViewChanged.First().Subscribe(_ =>
+            {
+                textWindow.SetText(text);
+                textWindow.OnAssetEnd.First().Subscribe(__ =>
+                {
+                    endWindow.ActivateEndWindow(EndWindow.EndKind.normal);
+                });
             });
-        });
+            return;
+        }
+        else
+        {
+            //テキスト流し予約
+            placeView.OnViewChanged.First().Subscribe(_ =>
+            {
+                textWindow.SetText(text);
+                textWindow.OnAssetEnd.First().Subscribe(__ =>
+                {
+                    ActionEndWithWaitAct();
+                });
+            });
+        }
     }
 
     public void Find()
@@ -103,11 +146,20 @@ public class GameManager : MonoBehaviour
         {
             textWindow.OnAssetEnd.First().Subscribe(_ =>
             {
-                actionWindow.ActionActivate();
+                ActionEndWithWaitAct();
             });
         }
 
         room.Find();
+    }
+
+    /// <summary>
+    /// 単位時間経過,次のアクションを待つ
+    /// </summary>
+    private void ActionEndWithWaitAct()
+    {
+        PlayerState.TimeStep.Value++;
+        actionWindow.ActionActivate();
     }
 
     private void GetItem(ItemAsset item)
@@ -122,12 +174,12 @@ public class GameManager : MonoBehaviour
                 textWindow.SetText(item.ReactionText);
                 textWindow.OnAssetEnd.First().Subscribe(___ =>
                 {
-                    actionWindow.ActionActivate();
+                    ActionEndWithWaitAct();
                 });
             }
             else
             {
-                actionWindow.ActionActivate();
+                ActionEndWithWaitAct();
             }
         });
     }
@@ -137,7 +189,7 @@ public class GameManager : MonoBehaviour
     {
         textWindow.SetText(item.BattleText);
         
-        textWindow.OnAssetEnd.First().Subscribe(_ =>
+        textWindow.OnAssetEnd.First().Subscribe(async _ =>
         {
             if (battleWindow.IsWon)
             {
@@ -145,6 +197,7 @@ public class GameManager : MonoBehaviour
             }
             else if (PlayerState.HP.Value == 0)
             {
+                await UniTask.Delay(1000); //Setすると問答無用でテキスト送りが入っちゃうので待ち
                 textWindow.SetText(battleWindow.DeadText);
                 textWindow.OnAssetEnd.First().Subscribe(async __ => {
                     await UniTask.Delay(1000);

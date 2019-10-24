@@ -24,7 +24,8 @@ public class TextWindow : MonoBehaviour,IPointerClickHandler
     private Subject<Unit> onFeedEnd = new Subject<Unit>();
     public IObservable<Unit> OnAssetEnd => onAssetEnd;
     private Subject<Unit> onAssetEnd = new Subject<Unit>();
-
+    public IObservable<Unit> OnFeedInput => onFeedInputSubject;
+    private Subject<Unit> onFeedInputSubject = new Subject<Unit>();
 
     public void SetText(TextAsset asset)
     {
@@ -33,8 +34,18 @@ public class TextWindow : MonoBehaviour,IPointerClickHandler
         TextFeed();
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            onFeedInputSubject.OnNext(Unit.Default);
+            TextFeed();
+        }
+    }
+
     public void OnPointerClick(PointerEventData eventData)
     {
+        onFeedInputSubject.OnNext(Unit.Default);
         TextFeed();
     }
 
@@ -103,6 +114,9 @@ public class TextWindow : MonoBehaviour,IPointerClickHandler
         onFeedEnd.OnNext(Unit.Default);
 
         if (cnt >= textAsset.SplitedText.Length)
+        {
             onAssetEnd.OnNext(Unit.Default);
+        }
+
     }
 }

@@ -31,7 +31,7 @@ public class RoomLock : MonoBehaviour
                 locked = !PlayerState.Items.Contains(9);
                 break;
             case Locktype.charm:
-                locked = !PlayerState.IsCharming.Value;
+                locked = PlayerState.IsCharming.Value;
                 break;
         }
 

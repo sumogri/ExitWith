@@ -25,6 +25,7 @@ public class EndWindow : MonoBehaviour
 
     private void ToTitle()
     {
+        PlayerState.InitState();
         Debug.Log("タイトルへ");
     }
 

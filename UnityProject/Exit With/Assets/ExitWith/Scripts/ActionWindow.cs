@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,6 +21,8 @@ public class ActionWindow : MonoBehaviour
     [SerializeField] private ItemWindow itemWindow;
     [SerializeField] private MapWindow mapWindow;
     [SerializeField] private TextWindow textWindow;
+    public IObservable<Unit> OnRetual => onRitualSubject;
+    private Subject<Unit> onRitualSubject = new Subject<Unit>();
 
     // Start is called before the first frame update
     void Start()
@@ -27,8 +30,21 @@ public class ActionWindow : MonoBehaviour
         find.onClick.AddListener(ActionDisActivate);
         move.onClick.AddListener(OnClickMoveButton);
         item.onClick.AddListener(OnClickItemButton);
-        ritual.onClick.AddListener(ActionDisActivate);
+        ritual.onClick.AddListener(OnClickRitualButton);
+        PlayerState.Items.ObserveAdd().First(x => x.Value == 8 && PlayerState.IsCharming.Value)
+            .Subscribe(_ => ritual.gameObject.SetActive(true))
+            .AddTo(gameObject);
+        PlayerState.IsCharming.First(b => !b)
+            .Subscribe(b => ritual.gameObject.SetActive(false))
+            .AddTo(gameObject);
     }
+
+    private void OnClickRitualButton()
+    {
+        onRitualSubject.OnNext(Unit.Default);
+        ActionDisActivate();
+    }
+
     private void OnClickMoveButton()
     {
         mapWindow.OnCloseWindow.First().Subscribe(r => {
@@ -36,7 +52,7 @@ public class ActionWindow : MonoBehaviour
             {
                 ActionActivate();
             }
-            else
+            else if(r.RoomId != 0) //出口じゃないなら
             {
                 textWindow.OnAssetEnd.First().Subscribe(__ =>
                 {
