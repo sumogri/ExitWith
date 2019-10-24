@@ -7578,7 +7578,10 @@ MonoBehaviour:
   map: {fileID: 1525539897}
   placeText: {fileID: 122099330}
   placeImage: {fileID: 1620155398}
-  textImages: []
+  textImages:
+  - {fileID: 21300000, guid: 15fdc0fe25f1fb34ab4eae3134dc061a, type: 3}
+  textName:
+  - "\u5BA2\u5BA4"
 --- !u!1 &700385118
 GameObject:
   m_ObjectHideFlags: 0

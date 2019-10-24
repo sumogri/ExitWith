@@ -13,15 +13,23 @@ public class PlaceView : MonoBehaviour
     [SerializeField] private Image placeImage;
     public IObservable<Unit> OnViewChanged { get { return onViewChanged; } } //画面切り替え終了通知
     private Subject<Unit> onViewChanged = new Subject<Unit>();
-    [SerializeField] private Image[] textImages; //テキストから制御される画像
+    [SerializeField] private Sprite[] textImages; //テキストから制御される部屋画像
+    [SerializeField] private string[] textName; //テキストから制御される部屋名
 
     // Start is called before the first frame update
     void Start()
     {
         PlayerState.OnPlaceChange.Subscribe(async i => await OnMoved(i));
+        TextAsset.OnRoom.Subscribe(async i => await ChangePlace(textImages[i],textName[i]));
     }
 
     private async UniTask OnMoved(int roomId)
+    {
+        await UniTask.DelayFrame(1);
+        await ChangePlace(map.Rooms[roomId].OwnPlaceImage, map.Rooms[roomId].RoomName);
+    }
+
+    private async UniTask ChangePlace(Sprite newImage,string newName)
     {
         placeText.text = "";
         Color color = Color.white;
@@ -35,8 +43,8 @@ public class PlaceView : MonoBehaviour
             placeImage.color = color;
             await UniTask.DelayFrame(1);
         }
-        placeText.text = map.Rooms[roomId].RoomName;
-        placeImage.sprite = map.Rooms[roomId].OwnPlaceImage;
+        placeText.text = newName;
+        placeImage.sprite = newImage;
 
         color.a = 0;
         time = 0;
@@ -48,5 +56,6 @@ public class PlaceView : MonoBehaviour
             await UniTask.DelayFrame(1);
         }
         onViewChanged.OnNext(Unit.Default);
+
     }
 }

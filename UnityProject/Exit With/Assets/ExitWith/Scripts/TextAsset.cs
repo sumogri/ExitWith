@@ -20,11 +20,14 @@ public class TextAsset : ScriptableObject
     [SerializeField, TextArea(1,100)] private string text;
     public string[] SplitedText { get; private set; }
     private static Regex regex = new Regex("<[^<>]*>");
+    private static Regex paramRegex = new Regex("[0-9]+");
     //パースした制御文字に対応するsubject群
     public static IObservable<string> OnControle => onControlReadSubject;
     private static Subject<string> onControlReadSubject = new Subject<string>();
     public static IObservable<bool> OnZonbi => onZonbiEnterSubject; //t=on ,f=off
     private static Subject<bool> onZonbiEnterSubject = new Subject<bool>();
+    public static IObservable<int> OnRoom => onRoomSubject;
+    private static Subject<int> onRoomSubject = new Subject<int>();
 
     public void OnEnable()
     {
@@ -55,6 +58,12 @@ public class TextAsset : ScriptableObject
             else if (m.Value.Contains("ZONBIOFF"))
             {
                 onZonbiEnterSubject.OnNext(false);
+            }
+            else if (m.Value.Contains("ROOM"))
+            {
+                var id = int.Parse(paramRegex.Match(m.Value).Value);
+                Debug.Log(id);
+                onRoomSubject.OnNext(id);
             }
 
             onControlReadSubject.OnNext(m.Value);
