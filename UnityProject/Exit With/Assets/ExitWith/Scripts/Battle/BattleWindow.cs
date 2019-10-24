@@ -14,7 +14,7 @@ public class BattleWindow : MonoBehaviour
     [SerializeField] private Button exitButton;
     [SerializeField] private TMP_Text lifeView;
     [SerializeField] private Image damageEff;
-    [SerializeField] private Image zonbi;
+    [SerializeField] private GameObject zonbi;
     private const int winableItemId = 4; //使うと勝つアイテムID
     public bool IsWon { get; private set; } = false;
     public Room BattleRoom => battleRoom;
@@ -49,9 +49,9 @@ public class BattleWindow : MonoBehaviour
                 lifeView.text += "♥";
             }
         }).AddTo(gameObject);
-        TextAsset.OnZonbi.Subscribe(b => zonbi.gameObject.SetActive(b)).AddTo(gameObject);
+        TextAsset.OnZonbi.Subscribe(b => zonbi.SetActive(b)).AddTo(gameObject);
         PlayerState.OnPlaceChange.Where(i => i != battleRoom.RoomId)
-            .Subscribe(_ => zonbi.gameObject.SetActive(false)).AddTo(gameObject);
+            .Subscribe(_ => zonbi.SetActive(false)).AddTo(gameObject);
     }
 
     private void OnPressItemButton(ItemAsset asset)

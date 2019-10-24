@@ -17,7 +17,7 @@ public class TextWindow : MonoBehaviour,IPointerClickHandler
     private bool nowFeeding = false; //現在テキスト送り中か
     private bool skipFeeding; //テキスト送りをスキップして即座に文を出す
     private const int MAX_ROWS = 3; //テキストで一度に出せる行数
-    private const int FEED_DELAY = 10; //文字送りディレイ(ミリ秒)
+    private const int FEED_DELAY = 30; //文字送りディレイ(ミリ秒)
     private const int FEED_RAW_DELAY = 100;
     [SerializeField] private TextLogWindow logWindow;
     [SerializeField] private GameObject feedEndMark;
@@ -78,7 +78,7 @@ public class TextWindow : MonoBehaviour,IPointerClickHandler
         var strpool = new string[MAX_ROWS];
         int loadendJ = 0;
 
-        for (int j = 0; j < MAX_ROWS; j++)
+        for (int j = 0; j < MAX_ROWS && !skipFeeding; j++)
         {
             if (cnt + j >= textAsset.SplitedText.Length)
                 break;

@@ -24,6 +24,8 @@ public class ActionWindow : MonoBehaviour
 
     public IObservable<Unit> OnRetual => onRitualSubject;
     private Subject<Unit> onRitualSubject = new Subject<Unit>();
+    public IObservable<bool> OnFinalAnswer => onPressFinalQuestionSubject;
+    private Subject<bool> onPressFinalQuestionSubject = new Subject<bool>();
 
     // Start is called before the first frame update
     void Start()
@@ -38,6 +40,14 @@ public class ActionWindow : MonoBehaviour
         PlayerState.IsCharming.First(b => !b)
             .Subscribe(b => ritual.gameObject.SetActive(false))
             .AddTo(gameObject);
+        yes.onClick.AddListener(() => {
+            onPressFinalQuestionSubject.OnNext(true);
+            yesNoButtons.SetActive(false);
+        });
+        no.onClick.AddListener(() => {
+            onPressFinalQuestionSubject.OnNext(false);
+            yesNoButtons.SetActive(false);
+        });
     }
 
     private void OnClickRitualButton()

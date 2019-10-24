@@ -22,11 +22,34 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextAsset ritualSuc;
     [SerializeField] private TextAsset ritualFal;
     [SerializeField] private CharmTimer charmTimer;
+    [SerializeField] private TextAsset trueEndText;
+    [SerializeField] private TextAsset goodEndText;
 
     // Start is called before the first frame update
     void Start()
     {
+        //イベント登録
         actionWindow.OnRetual.Subscribe(_ => Ritual());
+        actionWindow.OnFinalAnswer.Subscribe(ans => {
+            if (ans) {
+                textWindow.SetText(goodEndText);
+            }
+            else {
+                textWindow.SetText(trueEndText);
+            }
+
+            textWindow.OnAssetEnd.First().Subscribe(__ =>
+            {
+                if (ans)
+                {
+                    endWindow.ActivateEndWindow(EndWindow.EndKind.good);
+                }
+                else
+                {
+                    endWindow.ActivateEndWindow(EndWindow.EndKind.truee);
+                }
+            });
+        });
 
         //導入流し
         PlayerState.Place = defaultRoom.RoomId;
@@ -123,8 +146,10 @@ public class GameManager : MonoBehaviour
             else
                 text = room.OnFindTexts[0];
         }
+        
 
         textWindow.SetText(text);
+
 
         //アイテムを入手
         if (IsItemGetable(room)) //ここをいい感じに移譲すると入手条件いじれる
@@ -133,6 +158,13 @@ public class GameManager : MonoBehaviour
             textWindow.OnAssetEnd.First().Subscribe(_ =>
             {
                 GetItem(room.GettableItem);
+            });
+        }
+        else if (room.RoomId == 23) //地下室も違う
+        {
+            textWindow.OnAssetEnd.First().Subscribe(_ =>
+            {
+                actionWindow.YesNoActivate();
             });
         }
         else if (!battleWindow.IsWon && room == battleWindow.BattleRoom)
@@ -246,7 +278,7 @@ public class GameManager : MonoBehaviour
     {
         //血濡れの客室は別条件
         if (room.RoomId == 22)
-            return PlayerState.Items.Contains(8) && !PlayerState.Items.Contains(10); //レポート所持&血未所持
+            return PlayerState.Items.Contains(8) && !PlayerState.Items.Contains(10) && PlayerState.IsCharming.Value; //レポート所持&血未所持
 
         return room.GettableItem != null && !room.isFinded;
     }
