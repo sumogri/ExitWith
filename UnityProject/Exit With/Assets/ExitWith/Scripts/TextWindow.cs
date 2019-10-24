@@ -18,6 +18,7 @@ public class TextWindow : MonoBehaviour,IPointerClickHandler
     private bool skipFeeding; //テキスト送りをスキップして即座に文を出す
     private const int MAX_ROWS = 3; //テキストで一度に出せる行数
     private const int FEED_DELAY = 10; //文字送りディレイ(ミリ秒)
+    private const int FEED_RAW_DELAY = 100;
     [SerializeField] private TextLogWindow logWindow;
     [SerializeField] private GameObject feedEndMark;
     public IObservable<Unit> OnFeedEnd { get { return onFeedEnd; } }
@@ -91,6 +92,7 @@ public class TextWindow : MonoBehaviour,IPointerClickHandler
                 text.text += strpool[j][i];
             }
             text.text += '\n';
+            await UniTask.Delay(FEED_RAW_DELAY);
         }
 
         //全文を表示
