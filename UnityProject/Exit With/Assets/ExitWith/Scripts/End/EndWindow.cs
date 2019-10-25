@@ -14,6 +14,7 @@ public class EndWindow : MonoBehaviour
     [SerializeField] private GameObject contentTrue;
     [SerializeField] private Button twieetButton;
     [SerializeField] private Button toTitle;
+    [SerializeField] private SoundManager sound;
     public enum EndKind { bad1,bad2,normal,good,truee,none}
     private EndKind nowKind = EndKind.none;
 
@@ -25,12 +26,16 @@ public class EndWindow : MonoBehaviour
 
     private void ToTitle()
     {
+        sound.SetAndPlaySE(14); //ボタン音
+
         PlayerState.InitState();
         Debug.Log("タイトルへ");
     }
 
     private void OnTwieet()
     {
+        sound.SetAndPlaySE(14); //ボタン音
+
         var endname = "BadEnd1";
         switch (nowKind)
         {

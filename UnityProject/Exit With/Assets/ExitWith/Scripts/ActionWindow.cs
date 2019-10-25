@@ -21,7 +21,8 @@ public class ActionWindow : MonoBehaviour
     [SerializeField] private ItemWindow itemWindow;
     [SerializeField] private MapWindow mapWindow;
     [SerializeField] private TextWindow textWindow;
-
+    [SerializeField] private SoundManager sound;
+    
     public IObservable<Unit> OnRetual => onRitualSubject;
     private Subject<Unit> onRitualSubject = new Subject<Unit>();
     public IObservable<bool> OnFinalAnswer => onPressFinalQuestionSubject;
@@ -30,7 +31,10 @@ public class ActionWindow : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        find.onClick.AddListener(ActionDisActivate);
+        find.onClick.AddListener(() => {
+            ActionDisActivate();
+            sound.SetAndPlaySE(14); //ボタン音
+        });
         move.onClick.AddListener(OnClickMoveButton);
         item.onClick.AddListener(OnClickItemButton);
         ritual.onClick.AddListener(OnClickRitualButton);
@@ -43,10 +47,12 @@ public class ActionWindow : MonoBehaviour
         yes.onClick.AddListener(() => {
             onPressFinalQuestionSubject.OnNext(true);
             yesNoButtons.SetActive(false);
+            sound.SetAndPlaySE(14); //ボタン音
         });
         no.onClick.AddListener(() => {
             onPressFinalQuestionSubject.OnNext(false);
             yesNoButtons.SetActive(false);
+            sound.SetAndPlaySE(14); //ボタン音
         });
     }
 
@@ -54,6 +60,7 @@ public class ActionWindow : MonoBehaviour
     {
         onRitualSubject.OnNext(Unit.Default);
         ActionDisActivate();
+        sound.SetAndPlaySE(14); //ボタン音
     }
 
     private void OnClickMoveButton()
@@ -73,6 +80,7 @@ public class ActionWindow : MonoBehaviour
         });
         mapWindow.Activate();
         ActionDisActivate();
+        sound.SetAndPlaySE(14); //ボタン音
     }
 
     private void OnClickItemButton()
@@ -80,6 +88,7 @@ public class ActionWindow : MonoBehaviour
         itemWindow.OnCloseWindow.First().Subscribe(_ => ActionActivate());
         itemWindow.Activate();
         ActionDisActivate();
+        sound.SetAndPlaySE(14); //ボタン音
     }
 
     public void ActionActivate()

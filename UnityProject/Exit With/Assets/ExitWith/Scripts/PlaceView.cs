@@ -16,6 +16,7 @@ public class PlaceView : MonoBehaviour
     [SerializeField] private Sprite[] textImages; //テキストから制御される部屋画像
     [SerializeField] private string[] textName; //テキストから制御される部屋名
     [SerializeField] private GameObject[] damageObjs; //テキストから制御されるダメージエフェクト
+    [SerializeField] private SoundManager sound;
 
     // Start is called before the first frame update
     void Start()
@@ -28,10 +29,10 @@ public class PlaceView : MonoBehaviour
     private async UniTask OnMoved(int roomId)
     {
         await UniTask.DelayFrame(1);
-        await ChangePlace(map.Rooms[roomId].OwnPlaceImage, map.Rooms[roomId].RoomName);
+        await ChangePlace(map.Rooms[roomId].OwnPlaceImage, map.Rooms[roomId].RoomName,!map.Rooms[roomId].IsOpenSpace);
     }
 
-    private async UniTask ChangePlace(Sprite newImage,string newName)
+    private async UniTask ChangePlace(Sprite newImage,string newName,bool isSEOn = false)
     {
         placeText.text = "";
         Color color = Color.white;
@@ -47,6 +48,10 @@ public class PlaceView : MonoBehaviour
         }
         placeText.text = newName;
         placeImage.sprite = newImage;
+        if (isSEOn)
+        {
+            sound.SetAndPlaySE(1); //ドア音オン
+        }
 
         color.a = 0;
         time = 0;

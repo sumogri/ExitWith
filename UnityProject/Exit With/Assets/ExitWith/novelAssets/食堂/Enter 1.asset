@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 935477cdb7cb0a84495f18c2343d264a, type: 3}
   m_Name: Enter 1
   m_EditorClassIdentifier: 
-  text: "\u98DF\u5802\u3002\r\n\u57C3\u304C\u7A4D\u3082\u3063\u3066\u3044\u308B\u3002\r\n"
+  text: "<BGM 0>\u98DF\u5802\u3002\r\n\u57C3\u304C\u7A4D\u3082\u3063\u3066\u3044\u308B\u3002\r\n"

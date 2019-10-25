@@ -24,6 +24,7 @@ public class Room : MonoBehaviour, IComparable
     public Room[] Neighbors { get { return neighbors; } }
     [SerializeField] private Room[] neighbors;
     [SerializeField] private bool isOpenSpace = false; //開けた場所であるか、trueなら隣接すると名前が見える
+    public bool IsOpenSpace => isOpenSpace;
     //自分のUI
     private Text roomNameText;
     private Image[] roomConnections;

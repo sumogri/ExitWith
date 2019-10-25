@@ -28,7 +28,8 @@ public class BattleWindow : MonoBehaviour
     [SerializeField] private ItemAsset winDrop;
     public TextAsset DeadText => deadText;
     [SerializeField] private TextAsset deadText;
-
+    [SerializeField] private SoundManager sound;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -40,6 +41,7 @@ public class BattleWindow : MonoBehaviour
         exitButton.onClick.AddListener(() => {
             contentRoot.SetActive(false);
             onPressButtonSubject.OnNext(null);
+            sound.SetAndPlaySE(14); //ボタン音
         });
         InitRoomTexts();
         PlayerState.HP.Subscribe(hp => {
@@ -56,6 +58,7 @@ public class BattleWindow : MonoBehaviour
 
     private void OnPressItemButton(ItemAsset asset)
     {
+        sound.SetAndPlaySE(14); //ボタン音
         contentRoot.SetActive(false);
 
         if (winableItemId == asset.ItemID)

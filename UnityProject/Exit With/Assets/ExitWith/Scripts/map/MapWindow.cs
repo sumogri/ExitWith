@@ -28,6 +28,7 @@ public class MapWindow : MonoBehaviour
     [SerializeField] private Room toB1Room;
     public IObservable<Room> OnCloseWindow => onCloseWindowSubject;
     private Subject<Room> onCloseWindowSubject = new Subject<Room>();
+    [SerializeField] private SoundManager sound;
 
     // Start is called before the first frame update
     void Start()
@@ -79,6 +80,7 @@ public class MapWindow : MonoBehaviour
         if (PlayerState.Place == room.RoomId)
             return;
 
+        sound.SetAndPlaySE(0); //足音
         onMoveTo.OnNext(room);
         CloseWindow(room);
 

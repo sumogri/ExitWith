@@ -12,6 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 935477cdb7cb0a84495f18c2343d264a, type: 3}
   m_Name: OnEnter 1
   m_EditorClassIdentifier: 
-  text: "\u5ECA\u4E0B\u3002\u5909\u308F\u308A\u306A\u3044\u3002\n\u6050\u308D\u3057\u304F\u9759\u304B\u3060\u3002"
-  SplitedText:
-  - "\u5ECA\u4E0B\u3002\u5909\u308F\u308A\u306A\u3044\u3002"
+  text: "<BGM 0>\u5ECA\u4E0B\u3002\u5909\u308F\u308A\u306A\u3044\u3002\n\u6050\u308D\u3057\u304F\u9759\u304B\u3060\u3002"

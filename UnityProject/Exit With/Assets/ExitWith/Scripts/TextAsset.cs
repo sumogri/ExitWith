@@ -30,7 +30,10 @@ public class TextAsset : ScriptableObject
     private static Subject<int> onRoomSubject = new Subject<int>();
     public static IObservable<int> OnDamage => onDamageSubject;
     private static Subject<int> onDamageSubject = new Subject<int>();
-
+    public static IObservable<int> OnBGM => onbgmSubject;
+    private static Subject<int> onbgmSubject = new Subject<int>();
+    public static IObservable<int> OnSE => onseSubject;
+    private static Subject<int> onseSubject = new Subject<int>();
     public void OnEnable()
     {
         SplitedText = text.Split('\n');
@@ -73,7 +76,19 @@ public class TextAsset : ScriptableObject
                 Debug.Log(id);
                 onDamageSubject.OnNext(id);
             }
+            else if (m.Value.Contains("BGM"))
+            {
+                var id = int.Parse(paramRegex.Match(m.Value).Value);
+                Debug.Log(id);
+                onbgmSubject.OnNext(id);
 
+            }
+            else if (m.Value.Contains("SE"))
+            {
+                var id = int.Parse(paramRegex.Match(m.Value).Value);
+                Debug.Log(id);
+                onseSubject.OnNext(id);
+            }
             onControlReadSubject.OnNext(m.Value);
         }
 

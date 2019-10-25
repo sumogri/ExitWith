@@ -14,6 +14,7 @@ public class ItemWindow : MonoBehaviour
     [SerializeField] private GameObject contentRoot;
     public IObservable<Unit> OnCloseWindow => onCloseWindowSubject;
     private Subject<Unit> onCloseWindowSubject = new Subject<Unit>();
+    [SerializeField] private SoundManager sound;
 
     // Start is called before the first frame update
     void Start()
@@ -50,6 +51,7 @@ public class ItemWindow : MonoBehaviour
 
     private void OnPressed(ItemAsset asset)
     {
+        sound.SetAndPlaySE(14); //ボタン音
         SetAsset(asset);
     }
 

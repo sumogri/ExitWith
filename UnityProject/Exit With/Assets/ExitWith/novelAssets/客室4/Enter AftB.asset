@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 935477cdb7cb0a84495f18c2343d264a, type: 3}
   m_Name: Enter AftB
   m_EditorClassIdentifier: 
-  text: "\u8D64\u3044\u5BA2\u5BA4\u3002\r\n\u3068\u3066\u3082\u7F8E\u3057\u3044\u3002\r\n\u4E2D\u592E\u306B\u306F\u3001\u30BE\u30F3\u30D3\u306E\u6B7B\u4F53\u304C\u3042\u308B\u3002\r"
+  text: "<BGM 0>\u8D64\u3044\u5BA2\u5BA4\u3002\r\n\u3068\u3066\u3082\u7F8E\u3057\u3044\u3002\r\n\u4E2D\u592E\u306B\u306F\u3001\u30BE\u30F3\u30D3\u306E\u6B7B\u4F53\u304C\u3042\u308B\u3002\r"
