@@ -46,6 +46,7 @@ public class GameManager : MonoBehaviour
                 }
                 else
                 {
+                    PlayerState.IsTrueEnd = true;
                     endWindow.ActivateEndWindow(EndWindow.EndKind.truee);
                 }
             });

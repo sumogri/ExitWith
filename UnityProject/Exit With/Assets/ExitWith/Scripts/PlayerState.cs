@@ -21,6 +21,7 @@ public static class PlayerState
     public static ReactiveProperty<bool> IsCharming { get; private set; } = new ReactiveProperty<bool>(true);
     public static ReactiveProperty<int> TimeStep { get; private set; } = new ReactiveProperty<int>(0);
     public static bool IsEnd { get; set; } = false;
+    public static bool IsTrueEnd { get; set; } = false;
 
     public static void InitState()
     {
