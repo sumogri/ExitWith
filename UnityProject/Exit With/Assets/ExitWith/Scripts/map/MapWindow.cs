@@ -58,6 +58,7 @@ public class MapWindow : MonoBehaviour
 
     private void FloorChange(int to)
     {
+        sound.SetAndPlaySE(14);
         foreach(var o in floorObjes[nowActiveFloor])
         {
             o.SetActive(false);
