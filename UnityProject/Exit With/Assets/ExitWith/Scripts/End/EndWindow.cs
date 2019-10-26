@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using naichilab;
-
 public class EndWindow : MonoBehaviour
 {
     [SerializeField] private GameObject contentShar;
@@ -29,7 +29,7 @@ public class EndWindow : MonoBehaviour
         sound.SetAndPlaySE(14); //ボタン音
 
         PlayerState.InitState();
-        Debug.Log("タイトルへ");
+        SceneManager.LoadScene("Title");
     }
 
     private void OnTwieet()
@@ -53,7 +53,7 @@ public class EndWindow : MonoBehaviour
                 break;
         }
         var text = $"{endname}に到達!";
-        UnityRoomTweet.Tweet("ExitWith", text, "unityroom", "unity1week", "Exit_With");
+        UnityRoomTweet.Tweet("exitwith", text, "unityroom", "unity1week", "Exit_With");
     }
 
     public void ActivateEndWindow(EndKind kind)
