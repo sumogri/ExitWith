@@ -2,7 +2,7 @@
 Unity 1 week 「さがす」 投稿作品
 [こちら](https://unityroom.com/games/exitwith)で遊べます  
 
-![icon](https://github.com/sumogri/ExitWith/blob/master/ReadmeData/title.gif)
+![title](https://github.com/sumogri/ExitWith/blob/master/ReadmeData/Title.gif)
 
 ## 概要
 館を探して、謎を解くアドベンチャーノベルゲームです。
